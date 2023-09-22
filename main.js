@@ -15,8 +15,13 @@ fetch(resultURL)
 			tags += `
       <article>
         <h2>${data.snippet.title}</h2>
-        <p>${data.snippet.description}</p>
-        <spen>${data.snippet.publishedAt}</spen>
+        <div class='txt>
+          <p>${data.snippet.description}</p>
+          <spen>${data.snippet.publishedAt}</spen>
+        </div>
+        <div class='pic'>
+          <img src='${data.snippet.thumbnails.standard.url}'>
+        </div>
       </article>
       `;
 		});
