@@ -5,7 +5,19 @@ const pid = 'PLSflH3hv0IGX5YEKeboI4EFY3h5g6nFKU';
 const num = 5;
 const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
 const tit_len = 30;
-const desc_len = 120;
+const desc_len = 180;
+
+//이벤트 위임 (event delegation)
+//동적으로 생성되는 요소에 이벤트 연결이 불가 , 이벤트 연결시점에는 해당 돔이 생성되지 않았기 때문
+//항상 있는 body요소에다가 이벤트를 위임을해서 추후 동적 dom이 생기면 이벤트를 전달받도록 처리
+
+window.addEventListener('click', (e) => {
+	//e.currentTarget : 이벤트가 연결되어 있는 선택자를 반환
+	//e.target : 실제화면상에서 이벤트가 발생한 요소를 반환
+	if (e.target.nodeName === 'IMG') {
+		console.log('You clicked Pic');
+	}
+});
 
 fetch(resultURL)
 	.then((data) => data.json())
@@ -17,26 +29,26 @@ fetch(resultURL)
 			let desc = data.snippet.description;
 			desc.length > desc_len ? (desc = desc.substr(0, desc_len) + '...') : desc;
 
-			// 날자값 가공
+			//날자값 가공
 			let date = data.snippet.publishedAt.split('T')[0];
 			date = date.split('-').join('.');
 
 			tags += `
-      <article>
-        <h2>${
-					data.snippet.title.length > tit_len
-						? data.snippet.title.substr(0, tit_len) + '...'
-						: data.snippet.title
-				}</h2>
-        <div class='txt'>
-          <p>${data.snippet.description}</p>
-          <spen>${date}</spen>
-        </div>
-        <div class='pic'>
-          <img src='${data.snippet.thumbnails.standard.url}'>
-        </div>
-      </article>
-      `;
+				<article>
+					<h2>${
+						data.snippet.title.length > tit_len
+							? data.snippet.title.substr(0, tit_len) + '...'
+							: data.snippet.title
+					}</h2>
+					<div class='txt'>
+						<p>${desc}</p>
+						<span>${date}</span>
+					</div>
+					<div class='pic'>
+						<img src='${data.snippet.thumbnails.standard.url}' />
+					</div>					
+				</article>
+			`;
 		});
 
 		frame.innerHTML = tags;
