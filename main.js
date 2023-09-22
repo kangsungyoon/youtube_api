@@ -4,11 +4,8 @@ const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
 const pid = 'PLSflH3hv0IGX5YEKeboI4EFY3h5g6nFKU';
 const num = 5;
 const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
-const tit_len = 50;
+const tit_len = 30;
 const desc_len = 120;
-
-// 일정 글자수 이상일때 글자 자르고 말줄임표 붙이기
-// 문자열.substr(시작위치, 자를 글자수)
 
 fetch(resultURL)
 	.then((data) => data.json())
@@ -22,7 +19,7 @@ fetch(resultURL)
 
 			// 날자값 가공
 			let date = data.snippet.publishedAt.split('T')[0];
-			date = data.split('-').join('.');
+			date = date.split('-').join('.');
 
 			tags += `
       <article>
