@@ -2,16 +2,15 @@ const frame = document.querySelector('section');
 const api_key = 'AIzaSyDCGJcstcAwUWDoTcrQ4CZeSjdkDz8RSB4';
 const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
 const pid = 'PLSflH3hv0IGX5YEKeboI4EFY3h5g6nFKU';
-const num = 5;
+const num = 10;
 const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
 const tit_len = 30;
 const desc_len = 180;
 
 window.addEventListener('click', (e) => {
-	if (e.target.nodeName === 'IMG') createPop();
-	if (e.target.className == 'close') removePop();
+	if (e.target.nodeName === 'IMG') createPop(e.target.getAttribute('data-vid'));
+	if (e.target.className === 'close') removePop();
 });
-
 fetch(resultURL)
 	.then((data) => data.json())
 	.then((json) => {
@@ -38,7 +37,7 @@ fetch(resultURL)
 						<span>${date}</span>
 					</div>
 					<div class='pic'>
-						<img src='${data.snippet.thumbnails.standard.url}' />
+						<img src='${data.snippet.thumbnails.standard.url}' data-vid=${data.snippet.resourceId.videoId} />
 					</div>					
 				</article>
 			`;
@@ -47,19 +46,21 @@ fetch(resultURL)
 		frame.innerHTML = tags;
 	});
 
-function createPop() {
+function createPop(id) {
+	console.log(id);
 	const aside = document.createElement('aside');
 	aside.innerHTML = `
-    <div class='con'>
-    </div>
-
-    <span class='close'>close</span>
-    `;
-
+		<div class='con'>
+		<iframe src='https://www.youtube.com/embed/${id}'></iframe>
+		</div>		
+		<span class='close'>close</span>
+	`;
 	document.body.append(aside);
+	document.body.style.overflow = 'hidden';
 }
 
 function removePop() {
 	const pop = document.querySelector('aside');
 	pop.remove();
+	document.body.style.overflow = 'auto';
 }
