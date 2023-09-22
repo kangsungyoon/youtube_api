@@ -4,6 +4,11 @@ const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
 const pid = 'PLSflH3hv0IGX5YEKeboI4EFY3h5g6nFKU';
 const num = 5;
 const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
+const tit_len = 50;
+const desc_len = 120;
+
+// 일정 글자수 이상일때 글자 자르고 말줄임표 붙이기
+// 문자열.substr(시작위치, 자를 글자수)
 
 fetch(resultURL)
 	.then((data) => data.json())
@@ -12,9 +17,15 @@ fetch(resultURL)
 		let tags = '';
 
 		json.items.map((data) => {
+			let desc = data.snippet.description;
+			desc.length > desc_len ? (desc = desc.substr(0, desc_len) + '...') : desc;
 			tags += `
       <article>
-        <h2>${data.snippet.title}</h2>
+        <h2>${
+					data.snippet.title.length > tit_len
+						? data.snippet.title.substr(0, tit_len) + '...'
+						: data.snippet.title
+				}</h2>
         <div class='txt>
           <p>${data.snippet.description}</p>
           <spen>${data.snippet.publishedAt}</spen>
