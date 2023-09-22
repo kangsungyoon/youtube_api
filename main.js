@@ -28,7 +28,7 @@ fetch(resultURL)
 						? data.snippet.title.substr(0, tit_len) + '...'
 						: data.snippet.title
 				}</h2>
-        <div class='txt>
+        <div class='txt'>
           <p>${data.snippet.description}</p>
           <spen>${date}</spen>
         </div>
